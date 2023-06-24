@@ -979,6 +979,18 @@ func (w *window) isClosing() bool {
 	return closing
 }
 
+func (w *window) GetPos() (x, y int) {
+	return w.xpos, w.ypos
+}
+
+func (w *window) SetPos(x, y int) {
+	// w.moved() will be invoked automatically once the window is moved.
+	// Thus it will set w.xpos, w.ypos accordingly, no need to set them in SetPos().
+	w.runOnMainWhenCreated(func() {
+		w.viewport.SetPos(x, y)
+	})
+}
+
 func (d *gLDriver) CreateSplashWindow() fyne.Window {
 	win := d.createWindow("", false)
 	win.SetPadded(false)
